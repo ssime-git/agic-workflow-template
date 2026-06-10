@@ -21,6 +21,31 @@
 - No mutable default arguments
 - No wildcard imports (`from module import *`)
 
+## First-run setup check
+
+On first start in a new clone, verify the stack before doing any work:
+
+```bash
+# 1. ai-memory server running
+ai-memory status          # must respond; if not → see ~/project/ai-memory/AGENTS.md
+
+# 2. ai-memory wired to this agent
+#    (idempotent — safe to re-run)
+ai-memory install-mcp   --client claude-code --apply
+ai-memory install-hooks --agent  claude-code --apply
+
+# 3. uv available
+uv --version              # if missing: curl -LsSf https://astral.sh/uv/install.sh | sh
+
+# 4. dev deps installed
+uv sync --all-extras
+
+# 5. Entire active (already committed in .entire/)
+entire checkpoint list    # should respond (0 checkpoints on fresh clone = normal)
+```
+
+If ai-memory is not installed on this machine, follow the full runbook at `~/project/ai-memory/AGENTS.md` before proceeding.
+
 ## Multi-agent workflow
 
 **Resume:** If a "where you left off" block is present at startup, start from there — no re-exploration.
